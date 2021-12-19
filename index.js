@@ -1,30 +1,100 @@
 // // TODO: Include packages needed for this application
-
+const inquirer = require("inquirer");
+const fs = require("fs");
+const util = require("util");
 // // TODO: Create an array of questions for user input
 // const questions = [];
 
 // // TODO: Create a function to write README file
 // function writeToFile(fileName, data) {}
+const ReadMeTemplate = require("./src/ReadMeTemplate");
+const createFile = util.promisify(fs.writeFile);
 
 // // TODO: Create a function to initialize app
 // function init() {}
 
+
+const promptUser = () => {
+  return inquirer.prompt([
+      {
+          type:'input',
+          name:'username',
+          message:'Enter GitHub username:'
+      },
+      {
+          type:'input',
+          name:'projectTitle',
+          message:'What is the project title?'
+      },
+      {
+          type:'input',
+          name:'description',
+          message:'Describe the project:'
+      },
+      {
+          type:'input',
+          name:'installation',
+          message:'What are the steps required to install your project?'
+      },
+      {
+          type:'input',
+          name:'usage',
+          message:'Provide instructions and examples for use. Include screenshots as needed:'
+      },
+      {
+          type:'input',
+          name:'credits',
+          message:'List your collaborators, if any. If none, skip or type "N/A":'
+      },
+      {
+          type:'list',
+          name:'license',
+          message:'Choose the license for this project:',
+          choices: ['GNU AGPL', 'GNU LGPL', 'Mozilla', 'Apache','MIT', 'Boost Software','The Unlicense']
+      },
+      {
+          type:'input',
+          name:'features',
+          message:'List project features/languages:'
+      },
+      {
+          type:'input',
+          name:'contributing',
+          message:'If you would like others to contribute to your app/package, add guidelines for how to do so. If not, skip or type "N/A":'
+      },
+  ])
+};
+async function init() {
+  try {
+      const data = await promptUser();
+      const createContent = ReadMeTemplate(data);
+
+      await createFile('./sample/README.md', createContent);
+      console.log('Successfully created README.md');
+  } catch(err) {
+      console.log(err);
+  }
+};
 // // Function call to initialize app
-// init();
-const fs = require('fs');
-const generatePage = require('./src/ReadMeTemplate.js');
-
-const profileDataArgs = process.argv.slice(2);
-
-const [name, github] = profileDataArgs;
+init();
 
 
 
-fs.writeFile('./index.html', generatePage(name, github), err => {
-  if (err) throw new Error(err);
+// const fs = require('fs');
+// const generatePage = require('./src/ReadMeTemplate');
 
-  console.log('Portfolio complete! Check out index.html to see the output!');
-});
+// const pageHTML = generatePage(name, github);
+
+// fs.writeFile('./index.html', pageHTML, err => {
+//   if (err) throw err;
+
+//   console.log('Portfolio complete! Check out index.html to see the output!');
+// });
+
+
+console.log(inquirer)
+
+
 // Notice the lack of parentheses around the `profileDataArr` parameter?
 // const printProfileData = profileDataArr => {
 //     // This...

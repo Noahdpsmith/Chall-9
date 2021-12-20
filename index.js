@@ -43,8 +43,8 @@ const promptUser = () => {
       },
       {
           type:'input',
-          name:'credits',
-          message:'List your collaborators, if any. If none, skip or type "N/A":'
+          name:'Tests',
+          message:'Go the extra mile and write tests for your application. Then provide examples on how to run them.:'
       },
       {
           type:'list',
@@ -62,6 +62,11 @@ const promptUser = () => {
           name:'contributing',
           message:'If you would like others to contribute to your app/package, add guidelines for how to do so. If not, skip or type "N/A":'
       },
+      {
+        type:'input',
+        name:'questions',
+        message:'Whats your email?:'
+    },
   ])
 };
 async function init() {
